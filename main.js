@@ -1,15 +1,15 @@
 function createTodo(){
     alert("js読み込み");
     //fetchでajax通信、json形式でphpにpost
-    const name = document.getelementbyid("name");
-    const todo = document.getelementbyid("todo");
+    const name = document.getElementbyid("name");
+    const todo = document.getElementbyid("todo");
 
     fetch("main.php", {
         method: "post",
         headers: {
             "content-type": "application/json"
         },
-        body: json.stringify({
+        body: JSON.stringify({
             "name": name;
             "todo": todo;
         })
