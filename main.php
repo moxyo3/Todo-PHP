@@ -17,9 +17,9 @@
             'moxyooo',
             'moxyooo',
         );
-        $stmt = $pdo->prepare('INSERT INTO todos (name, todo) VALUES (:name, :todo);');
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':todo', $todo);
+        $stmt = $pdo->prepare('INSERT INTO todos (name, todo) VALUES (?, ?);');
+        $stmt->bindParam(1, $name);
+        $stmt->bindParam(2, $todo);
         $stmt->execute();
     } catch (PDOException $e) {
         echo $e->getMessage();
