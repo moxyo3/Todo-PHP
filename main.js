@@ -20,7 +20,7 @@ function createTodo(){
     }).then((response) => {
         if (response.ok){
             alert("登録しました");
-            //getTodo();
+            getTodo();
         } else {
             alert("登録失敗しました");
         }
@@ -28,13 +28,20 @@ function createTodo(){
         console.log(err);
     })
 }
+function getTodo(){
+    fetch('main.php').then((response)=>{ 
+        return response.json();
+    }).then((todos) => {
+    }
+     //createTable(todos);
+    ).catch((err)=> {
+        console.log(err);
+    })
+}
 
-//function createtable(){
-//    //再読込なしでテーブル再生成
-//    //documentを動的に生成
-//    const table = document.getelementbyid("table");
-//    table.innerhtml = "";
-//}
-
-//function getTodo(){
-//};
+function createTable(todos){
+    //再読込なしでテーブル再生成
+    //documentを動的に生成
+    const table = document.getelementbyid("table");
+    table.innerHTML = "";
+}
