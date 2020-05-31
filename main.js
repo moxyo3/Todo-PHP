@@ -32,6 +32,7 @@ function getTodo(){
     fetch('main.php').then((response)=>{ 
         return response.json();
     }).then((todos) => {
+        console.log(todos);
     }
      //createTable(todos);
     ).catch((err)=> {

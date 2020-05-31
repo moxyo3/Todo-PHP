@@ -1,8 +1,6 @@
 <?php
 require_once './db.php';
 
-$pdo = dbConnect();
-
 //Requestのmethodで分岐
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     createTodo();
@@ -16,6 +14,7 @@ function createTodo(){
 //$_POSTにapplication/jsonは渡せないので
 //file_get_contents("php://input")でリクエストボディを取得
 //POST受取、jsonのデコード
+    $pdo = dbConnect();
     $content = file_get_contents("php://input");
     //第二引数のtrue: 連想配列にする
     $decoded = json_decode($content, true);
@@ -30,6 +29,7 @@ function createTodo(){
 }
 
 function getTodo(){
+    $pdo = dbConnect();
     $sql = 'SELECT * FROM todos';
     $stmt = $pdo->query($sql);
 
