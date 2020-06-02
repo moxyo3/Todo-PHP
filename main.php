@@ -2,12 +2,16 @@
 require_once './db.php';
 
 //Requestのmethodで分岐
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    createTodo();
-} elseif($_SERVER["REQUEST_METHOD"] == "GET"){
-    getTodo();
-} elseif($_SERVER["REQUEST_METHOD"] == "DELETE"){
-    deleteTodo();
+switch ($_SERVER["REQUEST_METHOD"]){
+    case "POST":
+        createTodo();
+        break;
+    case "GET":
+        getTodo();
+        break;
+    case "DELETE":
+        deleteTodo();
+        break;
 }
 
 function createTodo(){
@@ -35,8 +39,13 @@ function getTodo(){
 
     $rows = $stmt-> fetchAll(PDO::FETCH_ASSOC);
     header('Content-type:application/json');
-    return json_encode($rows,JSON_UNESCAPED_UNICODE);
+    echo json_encode($rows,JSON_UNESCAPED_UNICODE);
 }
 
 function deleteTodo(){
+    $pdo = dbConnect();
+    $sql= 'DELETE from todos WHERE id = ?';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(1,$_REQUEST["id"]);
+    $stmt->execute();
 }

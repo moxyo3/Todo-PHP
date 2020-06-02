@@ -1,3 +1,5 @@
+getTodo();
+
 function createTodo(){
     //fetchでajax通信、json形式でphpにpost
     const name = document.getElementById("name");
@@ -7,9 +9,6 @@ function createTodo(){
         name: name.value,
         todo: todo.value,
     }
-
-    console.log(form.name);
-    console.log(form.todo);
 
     fetch('./main.php', {
         method: 'POST',
@@ -26,23 +25,60 @@ function createTodo(){
         }
     }).catch((err) => {
         console.log(err);
-    })
+    });
 }
+
 function getTodo(){
     fetch('main.php').then((response)=>{ 
         return response.json();
     }).then((todos) => {
-        console.log(todos);
-    }
-     //createTable(todos);
-    ).catch((err)=> {
+        for (const todo of todos){
+            //buttonプロパティ追加
+            todo.button = "button";
+        }
+        createTable(todos);
+    }).catch((err)=> {
         console.log(err);
     })
 }
 
 function createTable(todos){
-    //再読込なしでテーブル再生成
-    //documentを動的に生成
-    const table = document.getelementbyid("table");
+    const table = document.getElementById("table");
     table.innerHTML = "";
+    todos.unshift({id:"id", name:"name", todo:"todo",operation:"operation"});
+
+    for(const todo of todos){
+        const tr = document.createElement("tr");
+
+        for(const c of Object.values(todo)){
+            if(c === "button"){
+                const button = document.createElement("button");
+                button.textContent = "削除";
+                button.onclick = function(){
+                    deleteTodo(todo.id);
+                };
+                tr.appendChild(button);
+            } else {
+                const td = document.createElement("td");
+                td.textContent = c;
+                tr.appendChild(td);
+            }
+        }
+        table.appendChild(tr);
+    }
+}
+
+function deleteTodo(id){
+    fetch(`./main.php?id=${id}`,{
+        method: 'DELETE',
+    }).then((response)=>{
+        if(response.ok) {
+            alert("削除しました");
+            getTodo();
+        } else {
+            alert("削除失敗しました");
+        }
+    }).catch((err)=>{
+        console.log(err);
+    });
 }
