@@ -21,9 +21,10 @@ function createTodo(){
     global $pdo;
     $content = file_get_contents("php://input");
     //第二引数のtrue: 連想配列にする
+    //decode失敗時の戻り値はnull
     $decoded = json_decode($content, true);
     if($decoded === null){
-        throw new Exception('JSON Error');
+        throw new Exception('JSON decode Error');
     } else {
         $name = $decoded["name"];
         $todo = $decoded["todo"];
@@ -43,9 +44,10 @@ function getTodo(){
 
     $rows = $stmt-> fetchAll(PDO::FETCH_ASSOC);
     header('Content-type:application/json');
+    //json_encode失敗時の戻り値はfalse
     $json = json_encode($rows,JSON_UNESCAPED_UNICODE);
-    if ($json === null) {
-        throw new Exception ('JSON Error');
+    if ($json === false) {
+        throw new Exception ('json_encode Error');
     } else {
         echo $json;
     }
