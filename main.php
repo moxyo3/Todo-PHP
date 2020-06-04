@@ -54,9 +54,13 @@ function getTodo(){
 }
 
 function deleteTodo(){
-    global $pdo;
-    $sql= 'DELETE from todos WHERE id = ?';
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(1,$_REQUEST["id"]);
-    $stmt->execute();
+    if(is_numeric($_REQUEST["id"]) && $_REQUEST !== null){
+        global $pdo;
+        $sql= 'DELETE from todos WHERE id = ?';
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(1,$_REQUEST["id"]);
+        $stmt->execute();
+    } else {
+        throw new Exception('id error');
+    }
 }
