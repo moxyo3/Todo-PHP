@@ -28,13 +28,17 @@ function createTodo(){
     } else {
         $name = $decoded["name"];
         $todo = $decoded["todo"];
+        if($name === null || $todo === null) {
+            throw new Exception('null Data');
+        } else {
+            //DB処理
+            $sql = 'INSERT INTO todos (name, todo) VALUES (?, ?);';
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(1, $name);
+            $stmt->bindParam(2, $todo);
+            $stmt->execute();
+        }
     }
-
-    $sql = 'INSERT INTO todos (name, todo) VALUES (?, ?);';
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(1, $name);
-    $stmt->bindParam(2, $todo);
-    $stmt->execute();
 }
 
 function getTodo(){
