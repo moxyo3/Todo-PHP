@@ -5,27 +5,33 @@ function createTodo(){
     const name = document.getElementById("name");
     const todo = document.getElementById("todo");
 
-    const form = {
-        name: name.value,
-        todo: todo.value,
-    }
+    if (name.value  == "" || todo.value == ""){
+        alert("未入力の項目を入力してください");
+        return;
+    } else {
 
-    fetch('./main.php', {
-        method: 'POST',
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify(form),
-    }).then((response) => {
-        if (response.ok){
-            alert("登録しました");
-            getTodo();
-        } else {
-            alert("登録失敗しました");
+        const form = {
+            name: name.value,
+            todo: todo.value,
         }
-    }).catch((err) => {
-        console.log(err);
-    });
+    
+        fetch('./main.php', {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(form),
+        }).then((response) => {
+            if (response.ok){
+                alert("登録しました");
+                getTodo();
+            } else {
+                alert("登録失敗しました");
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
 }
 
 function getTodo(){
